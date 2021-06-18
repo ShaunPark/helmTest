@@ -1,6 +1,6 @@
 settings:
   log_monitors:
-custom_monitor_definitions: {
+custom_monitor_definitions: 
   kernel-monitor.json: |
     {
         "plugin": "kmsg",
@@ -90,5 +90,4 @@ custom_monitor_definitions: {
             }
         ]
     }
-}
 extraVolumeMounts: []
