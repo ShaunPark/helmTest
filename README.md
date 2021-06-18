@@ -24,3 +24,7 @@ Node-problem-detector와 draino 설치 방법
 - Drain 대상 condition 변경
 - pod 리소스 설정
 - 추가적인 eviction 옵션 설정
+
+
+TODO
+-테스트방법추가
