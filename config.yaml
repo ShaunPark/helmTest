@@ -1,7 +1,6 @@
 settings:
   log_monitors:
   - /custom-config/kernel-monitor.json
-  - /custom-config/docker-monitor.json
   custom_monitor_definitions: 
     kernel-monitor.json: |
       {
@@ -13,13 +12,18 @@ settings:
           "conditions": [
               {
                   "type": "KernelDeadlock",
-                  "reason": "KernelHasNoDeadlock-",
-                  "message": "kernel has no deadlock-"
+                  "reason": "KernelHasNoDeadlock",
+                  "message": "kernel has no deadlock"
               },
               {
                   "type": "ReadonlyFilesystem",
-                  "reason": "FilesystemIsNotReadOnly-",
-                  "message": "Filesystem is not read-only-"
+                  "reason": "FilesystemIsNotReadOnly",
+                  "message": "Filesystem is not read-only"
+              },
+              {
+                  "type": "EFSConnectFail",
+                  "reason": "EFSConnectSuccess",
+                  "message": "EFS is mounted successfully"
               }
           ],
           "rules": [
@@ -49,9 +53,9 @@ settings:
                   "pattern": "divide error: 0000 \\[#\\d+\\] SMP"
               },
               {
-            "type": "temporary",
-            "reason": "MemoryReadError",
-            "pattern": "CE memory read error .*"
+                  "type": "temporary",
+                  "reason": "MemoryReadError",
+                  "pattern": "CE memory read error .*"
               },
               {
                   "type": "permanent",
@@ -70,25 +74,12 @@ settings:
                   "condition": "ReadonlyFilesystem",
                   "reason": "FilesystemIsReadOnly",
                   "pattern": "Remounting filesystem read-only"
-              }
-          ]
-      }
-    docker-monitor.json: |
-      {
-          "plugin": "journald",
-          "pluginConfig": {
-              "source": "dockerd"
-          },
-          "logPath": "/var/log/journal",
-          "lookback": "5m",
-          "bufferSize": 10,
-          "source": "docker-monitor",
-          "conditions": [],
-          "rules": [
+              },
               {
-                  "type": "temporary",
-                  "reason": "CorruptDockerImage",
-                  "pattern": "Error trying v2 registry: failed to register layer: rename /var/lib/docker/image/(.+) /var/lib/docker/image/(.+): directory not empty.*"
+                  "type": "permanent",
+                  "condition": "EFSConnectFail",
+                  "reason": "EFSConnectFail",
+                  "pattern": "nfs: server \\S+ not responding, timed out"
               }
           ]
       }
