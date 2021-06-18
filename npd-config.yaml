@@ -1,6 +1,8 @@
 settings:
   log_monitors:
   - /custom-config/kernel-monitor.json
+  # settings.prometheus_port -- Prometheus exporter port
+  prometheus_port: 0
   custom_monitor_definitions: 
     kernel-monitor.json: |
       {
